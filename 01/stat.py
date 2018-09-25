@@ -46,11 +46,10 @@ for line in file:
 if statOf == 'composer':
 	for key in compDict:
 		print(key + ": " + str(compDict[key]))
-
 elif statOf == 'century':
 	for key in centDict:
 		print(str(key) + "th century: " + str(centDict[key]))
-
+		
 
 
 	
