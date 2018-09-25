@@ -16,7 +16,7 @@ for line in file:
 	centMatch = cent.match(line)
 	if compMatch:
 		for composer in compMatch.group(1).split(';'):	
-			composer = re.sub(r'\(.*\)', '', composer)
+			composer = re.sub(r'\(.*\d.*\)', '', composer)
 			composer = composer.strip()
 			if composer in compDict:
 				compDict[composer] = compDict[composer] + 1
@@ -33,12 +33,16 @@ for line in file:
 			else:
 				centDict[number] = 1
 		else:
-			number = int(str(number)[:2]) + 1
+			year = number % 100 # we need to check if the year is not round like 1800 for example, this still belongs to 18th century
+			if(year > 0):
+				number = int(str(number)[:2]) + 1
+			else:
+				number = int(str(number)[:2])
+				
 			if number in centDict:
 				centDict[number] = centDict[number] + 1
 			else:
 				centDict[number] = 1
-
 if statOf == 'composer':
 	for key in compDict:
 		print(key + ": " + str(compDict[key]))
