@@ -18,13 +18,8 @@ def load(filename):
 	prints.append(parseHelper.processPrintLines(printLinesArray))
 	return prints
 
-
-
-f1=open('./testfile.txt', 'w+', encoding='utf-8')
 for p in load(filename):
 	p.format()		
-	f1.write(str(p))
-	f1.write("\n")
 
 
 
