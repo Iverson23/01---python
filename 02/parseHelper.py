@@ -10,7 +10,7 @@ def processPrintLines(printLinesArray):
 	compositionYear = None
 	editionTitle = None
 	voices = []
-	partiture = None
+	partiture = False
 	incipit = None
 	editors = []
 	
@@ -21,12 +21,14 @@ def processPrintLines(printLinesArray):
 		
 		key = splitArray[0].strip()
 		value = splitArray[1].strip()
+		
 		vc = re.compile( r"Voice.*")
 		voiceMatch = vc.match(key)
-		
 		if(voiceMatch):
-			if(value != ""):
-				voices.append(processVoiceLine(value))
+			voices.append(processVoiceLine(value))
+		
+		if(value == ""):
+			continue
 		if(key == "Print Number"):
 			printNumber = int(value)
 		if(key == "Composer"):
@@ -42,8 +44,7 @@ def processPrintLines(printLinesArray):
 		if(key == "Edition"):
 			editionTitle = value
 		if(key == "Editor"):
-			if(value != ""):
-				editors.append(value)
+			editors.append(value)
 		if(key == "Partiture"):
 			partiture = processPartiture(value)
 		if(key == "Incipit"):
@@ -56,26 +57,28 @@ def processPrintLines(printLinesArray):
 	return printInstance
 
 def processVoiceLine(voiceLine):
-	rc = re.compile( r"(.+--.+?), (.*)")
+	rc = re.compile( r"(.+--.+?)[,;] (.*)")
 	rangeMatch = rc.match(voiceLine)
 	
 	range = None
-	name = ""
+	name = None
 	
 	if(rangeMatch):
 		range = rangeMatch.group(1)
 		name = rangeMatch.group(2)
-	else:
+	elif(voiceLine != ""):
 		name = voiceLine
 	
+	if(range == None and name == None):
+		return None
 	return scorelib.Voice(name, range)
 	
 def processComposerLine(composerLine):
 	persons = []
 	for composer in composerLine.split(';'):
 		composerName = re.sub(r'\(.*\d.*\)', '', composer).strip()
-		born = ""
-		died = ""
+		born = None
+		died = None
 		bc = re.compile( r".+ \((.+)\)")
 		bracketsMatch = bc.match(composer)
 		if bracketsMatch:
@@ -83,24 +86,24 @@ def processComposerLine(composerLine):
 			slashc = re.compile( r"(\d{4})-(\d{4})")
 			slashMatch = slashc.match(bracketsContent)
 			if(slashMatch):
-				born = slashMatch.group(1)
-				died = slashMatch.group(2)
+				born = int(slashMatch.group(1))
+				died = int(slashMatch.group(2))
 				
 			doubleShlashc = re.compile( r"(\d{4})--(\d{4})")
 			doubleSlashMatch = doubleShlashc.match(bracketsContent)
 			if(doubleSlashMatch):
-				born = doubleSlashMatch.group(1)
-				died = doubleSlashMatch.group(2)
+				born = int(doubleSlashMatch.group(1))
+				died = int(doubleSlashMatch.group(2))
 			
 			birthc = re.compile( r"(\d{4})--")
 			birthMatch = birthc.match(bracketsContent)
 			if(birthMatch):
-				born = birthMatch.group(1)
+				born = int(birthMatch.group(1))
 			
 			deadc = re.compile( r"\+(\d{4})")
 			deadMatch = deadc.match(bracketsContent)
 			if(deadMatch):
-				died = deadMatch.group(1)
+				died = int(deadMatch.group(1))
 				
 		persons.append(scorelib.Person(composerName, born, died))
 	return persons
@@ -116,9 +119,5 @@ def processPartiture(part):
 	yesMatch = yesc.match(part)
 	if(yesMatch):
 		return True
-	noc = re.compile( r".*no.*")
-	noMatch = noc.match(part)
-	if(noMatch):
-		return False
-	return None
+	return False
 

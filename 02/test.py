@@ -19,11 +19,12 @@ def load(filename):
 	return prints
 
 
+
+f1=open('./testfile.txt', 'w+', encoding='utf-8')
 for p in load(filename):
-	if(p.print_id == 661):
-		print(p.format())
-
-
+	p.format()		
+	f1.write(str(p))
+	f1.write("\n")
 
 
 

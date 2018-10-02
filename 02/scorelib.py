@@ -4,16 +4,16 @@ class Print:
 		self.print_id = print_id
 		self.partiture = partiture
 	def format( self ):
-		return str(self)
+		print(str(self))
 	def composition( self ):
 		return self.edition.composition
 	def __str__(self):
 		line = ""
-		if(self.print_id):
+		if(self.print_id != None):
 			line = line + "Print Number: " + str(self.print_id) + "\n"
-		if(self.edition):
+		if(self.edition != None):
 			line = line + str(self.edition)
-		if(self.partiture is not None):
+		if(self.partiture != None):
 			if(self.partiture):
 				line = line + "Partiture: yes" + "\n"
 			else:
@@ -27,9 +27,9 @@ class Edition:
 		self.name = name
 	def __str__(self):
 		line = ""
-		if(self.composition):
+		if(self.composition != None):
 			line = line + str(self.composition)
-		if(self.name):
+		if(self.name != None):
 			line = line + "Edition: " + self.name + "\n"
 		if(len(self.authors) > 0):
 			line = line + "Editor: " + str(self.authors[0]) + "\n"
@@ -57,20 +57,21 @@ class Composition:
 					line = line + str(author)
 				index = index + 1
 			line = line + "\n"
-		if(self.name):
+		if(self.name != None):
 			line = line + "Title: " + self.name + "\n"
-		if(self.genre):
+		if(self.genre != None):
 			line = line + "Genre: " + self.genre + "\n"
-		if(self.key):
+		if(self.key != None):
 			line = line + "Key: " + self.key + "\n"
-		if(self.year):
+		if(self.year != None):
 			line = line + "Composition Year: " + str(self.year) + "\n"
-		if(self.incipit):
+		if(self.incipit != None):
 			line = line + "Incipit: " + self.incipit + "\n"
 		counter = 1
 		if(len(self.voices) > 0):
 			for voice in self.voices:
-				line = line + "Voice " + str(counter) + ": " + str(voice)
+				if(voice != None):
+					line = line + "Voice " + str(counter) + ": " + str(voice)					
 				counter = counter + 1
 
 		return line
@@ -81,9 +82,9 @@ class Voice:
 		self.range = range
 	def __str__(self):
 		line = ""
-		if(self.range):
+		if(self.range != None):
 			line = self.range + ", " + self.name + "\n"
-		else:
+		elif(self.name != None):
 			line = self.name + "\n"
 		return line
 	
@@ -94,9 +95,17 @@ class Person:
 		self.died = died
 	def __str__(self):
 		compLine = ""
-		if(self.name):
+		b = ""
+		d = ""
+		
+		if(self.born != None):
+			b = str(self.born)
+		if(self.died != None):
+			d = str(self.died)
+			
+		if(self.name != None):
 			compLine = compLine + self.name
-		if(self.born != "" or self.died != ""):
-			compLine = compLine + " (" + self.born + "--" + self.died + ")"
+		if(b != "" or d != ""):
+			compLine = compLine + " (" + b + "--" + d + ")"
 		
 		return compLine
