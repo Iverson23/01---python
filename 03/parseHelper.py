@@ -19,8 +19,17 @@ def processPrintLines(printLinesArray):
 		if(len(splitArray) < 2):
 			continue
 		
+		value = splitArray[1]
+		if(len(splitArray) > 2):
+			counter = 0
+			for field in splitArray:
+				if(counter > 1):
+					value = value + ":" + splitArray[counter]
+				counter = counter + 1
+		
+		value = value.strip()
 		key = splitArray[0].strip()
-		value = splitArray[1].strip()
+		
 		
 		vc = re.compile( r"Voice.*")
 		voiceMatch = vc.match(key)

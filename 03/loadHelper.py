@@ -31,37 +31,43 @@ def addPersonToDb(person):
 	return cur.lastrowid
 
 def addCompositionToDb(c):
-	cur.execute('SELECT * FROM score WHERE name=? AND genre=? AND key=? AND incipit=? AND year=?',(c.name, c.genre, c.key, c.incipit, c.year))
-	row = cur.fetchone()
-	if(row != None):
-		return 0
+	for row in cur.execute('SELECT * FROM score'):
+		if(row[1] == c.name and row[2] == c.genre and row[3] == c.key and row[4] == c.incipit and row[5] == c.year):
+			return row[0]
 		
 	cur.execute('INSERT INTO score (name, genre, key, incipit, year) VALUES (?, ?, ?, ?, ?)', (c.name, c.genre, c.key, c.incipit, c.year))
 	return cur.lastrowid
 
 def addVoiceToDb(v, compId, number):
-	cur.execute('SELECT * FROM voice WHERE number=? AND score=? AND range=? AND name=?',(number, compId, v.range, v.name))
-	row = cur.fetchone()
-	if(row != None):
-		return
+	for row in cur.execute('SELECT * FROM voice'):
+		if(row[1] == number and row[2] == compId and row[3] == v.range and row[4] == v.name):
+			return
 		
 	cur.execute('INSERT INTO voice (number, score, range, name) VALUES (?, ?, ?, ?)',(number, compId, v.range, v.name))
 	
 def addEditionToDb(e, compId):
-	cur.execute('SELECT * FROM edition WHERE score=? AND name=?',(compId, e.name))
-	row = cur.fetchone()
-	if(row != None):
-		return 0
-	else:
-		cur.execute('INSERT INTO edition (score, name, year) VALUES (?, ?, ?)',(compId, e.name, None))
+	for row in cur.execute('SELECT * FROM edition'):
+		if(row[1] == compId and row[2] == e.name):
+			return row[0]
+
+	cur.execute('INSERT INTO edition (score, name, year) VALUES (?, ?, ?)',(compId, e.name, None))
 	return cur.lastrowid
 
 def fillScoreAuthor(authId, compId):
+	for row in cur.execute('SELECT * FROM score_author'):
+		if(row[1] == compId and row[2] == authId):
+			return
 	cur.execute('INSERT INTO score_author (score, composer) VALUES (?, ?)',(compId, authId))
 	
 def fillEditionAuthor(authId, editId):
+	for row in cur.execute('SELECT * FROM edition_author'):
+		if(row[1] == editId and row[2] == authId):
+			return
 	cur.execute('INSERT INTO edition_author (edition, editor) VALUES (?, ?)',(editId, authId))
 
 def addPrintToDb(p, editId):
 	partiture = "Y" if p.partiture else "N"
+	for row in cur.execute('SELECT * FROM print'):
+		if(row[1] == partiture and row[2] == editId):
+			return
 	cur.execute('INSERT INTO print (partiture, edition) VALUES (?, ?)',(partiture, editId))
