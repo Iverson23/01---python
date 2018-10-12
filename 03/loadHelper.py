@@ -68,6 +68,6 @@ def fillEditionAuthor(authId, editId):
 def addPrintToDb(p, editId):
 	partiture = "Y" if p.partiture else "N"
 	for row in cur.execute('SELECT * FROM print'):
-		if(row[1] == partiture and row[2] == editId):
+		if(row[0] == p.print_id and row[1] == partiture and row[2] == editId):
 			return
-	cur.execute('INSERT INTO print (partiture, edition) VALUES (?, ?)',(partiture, editId))
+	cur.execute('INSERT INTO print (id, partiture, edition) VALUES (?, ?, ?)',(p.print_id, partiture, editId))
