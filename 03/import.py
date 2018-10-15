@@ -23,6 +23,7 @@ def load(filename):
 
 loadHelper.createDb(dbFilename)
 
+
 for Print in load(textFilename):
 	compId = loadHelper.addCompositionToDb(Print.composition())
 	editId = loadHelper.addEditionToDb(Print.edition, compId)

@@ -25,16 +25,63 @@ def addPersonToDb(person):
 		if(row[2] != None):
 			died = row[2]		
 		cur.execute('UPDATE person SET born=?, died=? WHERE name=?', (born, died, person.name))
+		cur.execute('SELECT * FROM person WHERE name=?', (person.name,))
+		row = cur.fetchone()
+		return row[0]
 	else:
 		cur.execute('INSERT INTO person (born, died, name) VALUES (?, ?, ?)', (born, died, person.name))
 	
 	return cur.lastrowid
 
+addedCompositions = []
 def addCompositionToDb(c):
+	scoreRowsEqual = False
+	id = None
 	for row in cur.execute('SELECT * FROM score'):
 		if(row[1] == c.name and row[2] == c.genre and row[3] == c.key and row[4] == c.incipit and row[5] == c.year):
-			return row[0]
+			scoreRowsEqual = True
+			id = row[0]
+	
+	#check same authors
+	if(scoreRowsEqual):
+		if(len(c.authors) == len(addedCompositions[id - 1].authors)):
+			newNames = []
+			for composer in c.authors:
+				newNames.append(composer.name)
+			for composer in addedCompositions[id - 1].authors:
+				if(composer.name in newNames):
+					continue
+				else:
+					scoreRowsEqual = False
+					break
+		else:
+			scoreRowsEqual = False
+	
+	#check same voices
+	if(scoreRowsEqual):
+		if(len(c.voices) == len(addedCompositions[id - 1].voices)):
+			voices = []
+			for voice in c.voices:
+				voices.append(voice)
+			counter = 0
+			for voice in addedCompositions[id - 1].voices:
+				if(voice != None):
+					if(voice.name == voices[counter].name and voice.range == voices[counter].range):
+						continue
+						counter = counter + 1
+					else:
+						scoreRowsEqual = False
+						break
+				elif(voices[counter] != None):
+					print("test")
+					scoreRowsEqual = False
+		else:
+			scoreRowsEqual = False
+	
+	if(scoreRowsEqual):
+		return id
 		
+	addedCompositions.append(c)
 	cur.execute('INSERT INTO score (name, genre, key, incipit, year) VALUES (?, ?, ?, ?, ?)', (c.name, c.genre, c.key, c.incipit, c.year))
 	return cur.lastrowid
 
