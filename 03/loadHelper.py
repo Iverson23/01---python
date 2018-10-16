@@ -42,43 +42,43 @@ def addCompositionToDb(c):
 			scoreRowsEqual = True
 			id = row[0]
 	
-	#check same authors
-	if(scoreRowsEqual):
-		if(len(c.authors) == len(addedCompositions[id - 1].authors)):
-			newNames = []
-			for composer in c.authors:
-				newNames.append(composer.name)
-			for composer in addedCompositions[id - 1].authors:
-				if(composer.name in newNames):
-					continue
-				else:
-					scoreRowsEqual = False
-					break
-		else:
-			scoreRowsEqual = False
-	
-	#check same voices
-	if(scoreRowsEqual):
-		if(len(c.voices) == len(addedCompositions[id - 1].voices)):
-			voices = []
-			for voice in c.voices:
-				voices.append(voice)
-			counter = 0
-			for voice in addedCompositions[id - 1].voices:
-				if(voice != None):
-					if(voice.name == voices[counter].name and voice.range == voices[counter].range):
+		#check same authors
+		if(scoreRowsEqual):
+			if(len(c.authors) == len(addedCompositions[id - 1].authors)):
+				newNames = []
+				for composer in c.authors:
+					newNames.append(composer.name)
+				for composer in addedCompositions[id - 1].authors:
+					if(composer.name in newNames):
 						continue
-						counter = counter + 1
 					else:
 						scoreRowsEqual = False
 						break
-				elif(voices[counter] != None):
-					scoreRowsEqual = False
-		else:
-			scoreRowsEqual = False
-	
-	if(scoreRowsEqual):
-		return id
+			else:
+				scoreRowsEqual = False
+		
+		#check same voices
+		if(scoreRowsEqual):
+			if(len(c.voices) == len(addedCompositions[id - 1].voices)):
+				voices = []
+				for voice in c.voices:
+					voices.append(voice)
+				counter = 0
+				for voice in addedCompositions[id - 1].voices:
+					if(voice != None):
+						if(voice.name == voices[counter].name and voice.range == voices[counter].range):
+							continue
+							counter = counter + 1
+						else:
+							scoreRowsEqual = False
+							break
+					elif(voices[counter] != None):
+						scoreRowsEqual = False
+			else:
+				scoreRowsEqual = False
+		
+		if(scoreRowsEqual):
+			return id
 		
 	addedCompositions.append(c)
 	cur.execute('INSERT INTO score (name, genre, key, incipit, year) VALUES (?, ?, ?, ?, ?)', (c.name, c.genre, c.key, c.incipit, c.year))
