@@ -73,7 +73,6 @@ def addCompositionToDb(c):
 						scoreRowsEqual = False
 						break
 				elif(voices[counter] != None):
-					print("test")
 					scoreRowsEqual = False
 		else:
 			scoreRowsEqual = False
