@@ -1,12 +1,12 @@
 class Print:
 	def __init__( self, edition, print_id, partiture ):
-		self.edition = edition
+		self.Edition = edition
 		self.print_id = print_id
-		self.partiture = partiture
+		self.Partiture = partiture
 	def format( self ):
 		print(str(self))
 	def composition( self ):
-		return self.edition.composition
+		return self.Edition.Composition
 	def __str__(self):
 		line = ""
 		if(self.print_id != None):
@@ -22,9 +22,9 @@ class Print:
 
 class Edition:
 	def __init__( self, composition, authors, name ):
-		self.name = name
-		self.composition = composition
-		self.authors = authors
+		self.Edition = name
+		self.Composition = composition
+		self.Editor = authors
 		
 	def __str__(self):
 		line = ""
@@ -39,13 +39,13 @@ class Edition:
 	
 class Composition:
 	def __init__( self, name, incipit, key, genre, year, voices, authors ):
-		self.name = name
-		self.incipit = incipit
-		self.key = key
-		self.genre = genre
+		self.Title = name
+		self.Incipit = incipit
+		self.Key = key
+		self.Genre = genre
 		self.year = year
-		self.voices = voices
-		self.authors = authors
+		self.Voices = voices
+		self.Composer = authors
 	def __str__(self):
 		line = ""
 		if(len(self.authors) > 0):
@@ -79,8 +79,8 @@ class Composition:
 		
 class Voice:
 	def __init__( self, name, range ):
-		self.name = name
-		self.range = range
+		self.Name = name
+		self.Range = range
 	def __str__(self):
 		line = ""
 		if(self.range != None):
@@ -91,9 +91,9 @@ class Voice:
 	
 class Person:
 	def __init__( self, name, born, died ):
-		self.name = name
-		self.born = born
-		self.died = died
+		self.Name = name
+		self.Born = born
+		self.Died = died
 	def __str__(self):
 		compLine = ""
 		b = ""

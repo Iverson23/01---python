@@ -9,4 +9,4 @@ def serialize(obj):
 	
 for p in export.getAllPrints():
 	if(p.print_id == int(printNumber)):
-		print(json.dumps(p.composition().authors, default=serialize, indent=2, ensure_ascii=False))
+		print(json.dumps(p.composition().Composer, default=serialize, indent=2, ensure_ascii=False))
