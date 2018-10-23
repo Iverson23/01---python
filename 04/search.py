@@ -32,8 +32,11 @@ for p in export.getAllPrints():
 				if o.name == c:
 					o.prints.append(p)
 
-#f = open("output.txt", "w", encoding='utf-8')
+outputDict = {}
 for c in output:
-	print(json.dumps(c, default=serialize, indent=2))
-	#f.write(json.dumps(c, default=serialize, indent=2))
+	outputDict[c.name] = c.prints
+	
+print(json.dumps(outputDict, default=serialize, indent=2, ensure_ascii=False))
+#f = open("output.txt", "w", encoding='utf-8')
+#f.write(json.dumps(outputDict, default=serialize, indent=2, ensure_ascii=False))
 	

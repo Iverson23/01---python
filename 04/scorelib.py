@@ -22,9 +22,10 @@ class Print:
 
 class Edition:
 	def __init__( self, composition, authors, name ):
+		self.name = name
 		self.composition = composition
 		self.authors = authors
-		self.name = name
+		
 	def __str__(self):
 		line = ""
 		if(self.composition != None):
