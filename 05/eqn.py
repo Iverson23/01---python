@@ -17,6 +17,8 @@ for line in file:
 			break
 		if(k == "-"):
 			continue
+		if(k == "−"):
+			continue
 		if(k == "+"):
 			continue
 		
@@ -26,7 +28,6 @@ for line in file:
 
 letters.sort()
 
-	
 file.seek(0)
 for line in file:
 	equationCoeficients = []
@@ -46,6 +47,9 @@ for line in file:
 			nextOneIsConstant = True
 			continue
 		if(k == "-"):
+			nextOneIsNegative = True
+			continue
+		if(k == "−"):
 			nextOneIsNegative = True
 			continue
 		if(k == "+"):
