@@ -21,6 +21,8 @@ for line in file:
 			continue
 		if(k == "+"):
 			continue
+		if(k == ""):
+			continue
 		
 		letter = k[-1:]
 		if(letter not in letters):
@@ -40,6 +42,8 @@ for line in file:
 	letter = None
 	
 	for k in split:
+		if(k == ""):
+			continue
 		if(nextOneIsConstant):
 			constants.append(int(k))
 			continue
@@ -54,6 +58,7 @@ for line in file:
 			continue
 		if(k == "+"):
 			continue
+
 		
 		letter = k[-1:]
 		if(len(k) > 1):
