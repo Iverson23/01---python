@@ -116,6 +116,11 @@ class HandlerClass(BaseHTTPRequestHandler):
 
 port = int(sys.argv[1])
 upstream = sys.argv[2]
+fixedUpstream = urllib.parse.urlparse(upstream)
+if not fixedUpstream.scheme:
+	upstream = 'http://' + upstream
+	fixedUpstream = urllib.parse.urlparse(upstream)
+
 
 with HTTPServer(("", port), HandlerClass) as httpd:
 	httpd.serve_forever()
